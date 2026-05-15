@@ -6,7 +6,7 @@
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-orange?style=for-the-badge&logo=tensorflow)
 ![Flask](https://img.shields.io/badge/Flask-3.0-black?style=for-the-badge&logo=flask)
 ![Explainable AI](https://img.shields.io/badge/Explainable%20AI-GradCAM-purple?style=for-the-badge)
-[![GitHub Actions](https://github.com/bpriyanka-rao/Alzheimers-detection-main/actions/workflows/python-app.yml/badge.svg)](https://github.com/bpriyanka-rao/Alzheimers-detection-main/actions/workflows/python-app.yml)
+[![GitHub Actions](https://github.com/bpriyanka-rao/NeuroScan-AI/actions/workflows/python-app.yml/badge.svg)](https://github.com/bpriyanka-rao/NeuroScan-AI/actions/workflows/python-app.yml)
 
 NeuroScan AI is a polished portfolio-grade healthcare intelligence project that detects Alzheimer’s progression from brain MRI scans, provides explainable heatmaps, and generates medical-grade PDF reports with clinical recommendations.
 
@@ -113,8 +113,8 @@ The app can optionally send email reports and chat with Gemini. Copy `.env.examp
 
 ### Install
 ```bash
-git clone https://github.com/bpriyanka-rao/Alzheimers-detection-main.git
-cd Alzheimers-detection-main
+git clone https://github.com/bpriyanka-rao/NeuroScan-AI.git
+cd NeuroScan-AI
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
@@ -188,7 +188,7 @@ git init
 git add .
 git commit -m "Professionalize NeuroScan AI healthcare project"
 git branch -M main
-git remote add origin https://github.com/bpriyanka-rao/Alzheimers-detection-main.git
+git remote add origin https://github.com/bpriyanka-rao/NeuroScan-AI.git
 git push -u origin main
 ```
 
