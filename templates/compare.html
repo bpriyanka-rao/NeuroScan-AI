@@ -1,0 +1,146 @@
+{% extends "layout_base.html" %}
+{% block title %}Compare Scans{% endblock %}
+{% block page_title %}Comparative Scan Viewer{% endblock %}
+
+{% block content %}
+
+<div class="section-header">
+  <p class="label"><i class="fa fa-code-compare"></i>&nbsp; Analysis</p>
+  <h1 class="heading-lg">Compare Scans</h1>
+  <p>Upload two MRI scans (Earlier vs Recent) to track disease progression.</p>
+</div>
+
+<!-- Upload Forms -->
+<form action="/compare" method="POST" enctype="multipart/form-data" class="grid-2 mb-3">
+  <!-- Scan 1 -->
+  <div class="glass-card" style="padding:1.5rem;">
+    <h3 class="heading-sm mb-1"><i class="fa fa-clock-rotate-left" style="color:var(--text-muted)"></i> Scan 1 (Earlier)</h3>
+    <input type="file" name="scan1" id="scan1" class="hidden" accept=".jpg,.jpeg,.png,.bmp" required onchange="previewCompareImage(this, 'preview1')" />
+    <label for="scan1" class="upload-zone" id="zone1">
+      <i class="fa fa-cloud-arrow-up upload-icon text-muted"></i>
+      <div style="font-weight:700;">Select Earlier Scan</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.4rem;">JPG, PNG, BMP up to 16MB</div>
+      <img id="preview1" class="preview-img" src="" alt="Preview 1" />
+    </label>
+  </div>
+  
+  <!-- Scan 2 -->
+  <div class="glass-card" style="padding:1.5rem;">
+    <h3 class="heading-sm mb-1"><i class="fa fa-clock" style="color:var(--teal)"></i> Scan 2 (Recent)</h3>
+    <input type="file" name="scan2" id="scan2" class="hidden" accept=".jpg,.jpeg,.png,.bmp" required onchange="previewCompareImage(this, 'preview2')" />
+    <label for="scan2" class="upload-zone" id="zone2">
+      <i class="fa fa-cloud-arrow-up upload-icon text-muted"></i>
+      <div style="font-weight:700;">Select Recent Scan</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.4rem;">JPG, PNG, BMP up to 16MB</div>
+      <img id="preview2" class="preview-img" src="" alt="Preview 2" />
+    </label>
+  </div>
+  
+  <div style="grid-column: 1 / -1; display:flex; justify-content:center; margin-top:1rem;">
+    <button type="submit" class="btn btn-primary btn-lg" onclick="showLoader()">
+      <i class="fa fa-code-compare"></i> Run Comparison
+    </button>
+  </div>
+</form>
+
+{% if res1 and res2 %}
+<!-- Results Section -->
+<div class="divider"></div>
+
+<!-- Progression Indicator -->
+<div class="glass-card mb-3" style="padding:2rem; text-align:center;">
+  <p class="label mb-1">Progression Indicator</p>
+  {% if progression_status == 'worsened' %}
+    <h2 style="color:var(--red);font-size:1.5rem;font-weight:800;">
+      <i class="fa fa-circle-arrow-down"></i> Progression Detected — Stage has advanced
+    </h2>
+  {% elif progression_status == 'improved' %}
+    <h2 style="color:var(--green);font-size:1.5rem;font-weight:800;">
+      <i class="fa fa-circle-arrow-up"></i> Improvement Noted — Stage has reduced
+    </h2>
+  {% else %}
+    <h2 style="color:var(--yellow);font-size:1.5rem;font-weight:800;">
+      <i class="fa fa-minus"></i> Stable — No change in detected stage
+    </h2>
+  {% endif %}
+</div>
+
+<!-- 2x2 Grid -->
+<div class="grid-2">
+  <!-- Scan 1 Result -->
+  <div class="glass-card" style="padding:1.5rem; border-top: 3px solid var(--text-muted);">
+    <h3 class="heading-sm mb-1">Earlier Scan Result</h3>
+    <div style="font-size:1.2rem;font-weight:800;color:var(--text-primary);margin-bottom:0.5rem;">
+      {{ res1.class }}
+    </div>
+    <div style="font-size:1.5rem;font-weight:900;color:var(--teal);margin-bottom:1rem;">
+      {{ res1.confidence }}% Confidence
+    </div>
+    
+    <div class="grid-2" style="gap:0.5rem;">
+      <div>
+        <img src="{{ res1.image_url }}" style="width:100%; border-radius:4px;" />
+        <div style="font-size:0.7rem;text-align:center;color:var(--text-muted);margin-top:0.2rem;">Original</div>
+      </div>
+      <div>
+        {% if res1.heatmap_b64 %}
+          <img src="data:image/png;base64,{{ res1.heatmap_b64 }}" style="width:100%; border-radius:4px;" />
+          <div style="font-size:0.7rem;text-align:center;color:var(--teal);margin-top:0.2rem;">Grad-CAM</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Scan 2 Result -->
+  <div class="glass-card" style="padding:1.5rem; border-top: 3px solid var(--teal);">
+    <h3 class="heading-sm mb-1">Recent Scan Result</h3>
+    <div style="font-size:1.2rem;font-weight:800;color:var(--text-primary);margin-bottom:0.5rem;">
+      {{ res2.class }}
+    </div>
+    <div style="font-size:1.5rem;font-weight:900;color:var(--teal);margin-bottom:1rem;">
+      {{ res2.confidence }}% Confidence
+    </div>
+    
+    <div class="grid-2" style="gap:0.5rem;">
+      <div>
+        <img src="{{ res2.image_url }}" style="width:100%; border-radius:4px;" />
+        <div style="font-size:0.7rem;text-align:center;color:var(--text-muted);margin-top:0.2rem;">Original</div>
+      </div>
+      <div>
+        {% if res2.heatmap_b64 %}
+          <img src="data:image/png;base64,{{ res2.heatmap_b64 }}" style="width:100%; border-radius:4px;" />
+          <div style="font-size:0.7rem;text-align:center;color:var(--teal);margin-top:0.2rem;">Grad-CAM</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-3 text-center">
+  <button class="btn btn-outline" onclick="alert('PDF Comparison Report feature coming soon!')">
+    <i class="fa fa-file-pdf"></i> Download Comparison Report
+  </button>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function previewCompareImage(input, previewId) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.getElementById(previewId);
+      img.src = e.target.result;
+      img.classList.add('visible');
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+function showLoader() {
+  // If we had a global loader we could trigger it here
+}
+</script>
+{% endblock %}

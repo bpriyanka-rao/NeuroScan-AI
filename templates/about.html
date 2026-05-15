@@ -1,0 +1,174 @@
+{% extends "layout_base.html" %}
+{% block title %}About Alzheimer's Disease{% endblock %}
+{% block page_title %}About Alzheimer's Disease{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+<div class="section-header">
+  <p class="label"><i class="fa fa-circle-info"></i>&nbsp; Education</p>
+  <h1 class="heading-lg">Understanding Alzheimer's Disease</h1>
+  <p>A comprehensive guide to causes, symptoms, stages, and the importance of early AI-assisted detection.</p>
+</div>
+
+<!-- ── Overview Stats ────────────────────────────────────────────────────── -->
+<div class="stats-row mb-3">
+  <div class="stat-card"><div class="stat-val text-gradient">55M+</div><div class="stat-lbl">People Living with Dementia</div></div>
+  <div class="stat-card"><div class="stat-val text-gradient">60-70%</div><div class="stat-lbl">Dementia Cases are Alzheimer's</div></div>
+  <div class="stat-card"><div class="stat-val text-gradient">10M</div><div class="stat-lbl">New Cases Per Year Worldwide</div></div>
+  <div class="stat-card"><div class="stat-val text-gradient">2050</div><div class="stat-lbl">Cases Could Triple by This Year</div></div>
+</div>
+
+<!-- ── What is Alzheimer's ──────────────────────────────────────────────── -->
+<div class="glass-card" style="padding:2rem;margin-bottom:1.5rem;">
+  <p class="label mb-1"><i class="fa fa-brain"></i>&nbsp; What is Alzheimer's?</p>
+  <div class="grid-2" style="gap:2rem;align-items:center;">
+    <div>
+      <p style="color:var(--text-secondary);line-height:1.8;font-size:0.92rem;">
+        Alzheimer's disease is a progressive neurological disorder that causes the brain to shrink (atrophy)
+        and brain cells to die. It is the most common cause of dementia, a continuous decline in thinking,
+        behavioral and social skills that affects a person's ability to function independently.
+      </p>
+      <p style="color:var(--text-secondary);line-height:1.8;font-size:0.92rem;margin-top:1rem;">
+        The disease is characterized by the accumulation of <strong style="color:var(--teal);">amyloid plaques</strong>
+        and <strong style="color:var(--teal);">tau tangles</strong> in brain tissue, which disrupts communication
+        between neurons and eventually leads to their death. The hippocampus — responsible for forming new memories —
+        is typically one of the first regions affected.
+      </p>
+    </div>
+    <div>
+      <div class="insight-list">
+        <div class="insight-item"><i class="fa fa-dna insight-icon"></i><span><strong>Genetic:</strong> APOE ε4 gene is the strongest risk factor for late-onset Alzheimer's</span></div>
+        <div class="insight-item"><i class="fa fa-calendar insight-icon"></i><span><strong>Age:</strong> Risk doubles every 5 years after age 65</span></div>
+        <div class="insight-item"><i class="fa fa-heart-pulse insight-icon"></i><span><strong>Cardiovascular:</strong> High BP, diabetes, and obesity increase risk</span></div>
+        <div class="insight-item"><i class="fa fa-person-running insight-icon"></i><span><strong>Lifestyle:</strong> Physical inactivity and social isolation are modifiable risk factors</span></div>
+        <div class="insight-item"><i class="fa fa-graduation-cap insight-icon"></i><span><strong>Education:</strong> Higher cognitive reserve may delay symptom onset</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 4 Disease Stages ───────────────────────────────────────────────────── -->
+<div class="glass-card" style="padding:2rem;margin-bottom:1.5rem;">
+  <p class="label mb-2"><i class="fa fa-stairs"></i>&nbsp; Disease Stages</p>
+  <h2 class="heading-md mb-3">The 4 Classification Stages</h2>
+  <div class="grid-2" style="gap:1.25rem;">
+    {% for stage in [
+      ('0','Non Demented','#22c55e','low','fa-circle-check',
+       'No significant cognitive decline. Brain structure appears normal. This stage represents healthy brain function with no detectable Alzheimer\'s-related changes.',
+       ['Normal daily functioning','No significant memory loss','Independent in all activities','May have occasional normal forgetfulness']),
+      ('1','Very Mild Demented','#84cc16','moderate',
+       'fa-triangle-exclamation',
+       'Subtle changes begin to occur. Corresponds to Mild Cognitive Impairment (MCI). Changes may be imperceptible to others, but clinical tests can detect early decline.',
+       ['Occasional memory lapses','Mild word-finding difficulties','Slight disorientation in unfamiliar places','Minor difficulties with complex planning']),
+      ('2','Mild Demented','#f97316','high','fa-exclamation',
+       'Noticeable cognitive impairment affecting daily life. Hippocampal atrophy is visible on MRI. Patient may still function semi-independently but needs increasing support.',
+       ['Significant memory loss disrupting daily activities','Getting lost in familiar places','Personality changes and mood swings','Difficulty managing finances or medications']),
+      ('3','Moderate Demented','#ef4444','critical','fa-circle-xmark',
+       'Advanced cognitive decline. Widespread cortical atrophy. Full-time care is required. Communication becomes severely impaired and basic daily activities need full assistance.',
+       ['Severe memory loss — may not recognize family','Cannot perform basic daily activities alone','Loss of bladder/bowel control','Hallucinations, delusions, severe agitation'])
+    ] %}
+    <div style="padding:1.5rem;border-radius:var(--radius);border:1px solid {{ stage[1]|replace('Non ','') }}22;background:{{ stage[2] }}08;">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+        <div style="width:36px;height:36px;border-radius:10px;background:{{ stage[2] }}22;display:grid;place-items:center;">
+          <i class="fa {{ stage[4] }}" style="color:{{ stage[2] }};"></i>
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:0.95rem;">Stage {{ stage[0] }}: {{ stage[1] }}</div>
+          <span style="font-size:0.7rem;padding:0.15rem 0.5rem;border-radius:999px;background:{{ stage[2] }}20;color:{{ stage[2] }};border:1px solid {{ stage[2] }}40;font-weight:700;text-transform:uppercase;">{{ stage[3] }}</span>
+        </div>
+      </div>
+      <p style="font-size:0.83rem;color:var(--text-secondary);margin-bottom:1rem;line-height:1.65;">{{ stage[5] }}</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:0.4rem;">
+        {% for sym in stage[6] %}
+        <li style="font-size:0.8rem;color:var(--text-secondary);display:flex;gap:0.5rem;">
+          <span style="color:{{ stage[2] }};">▸</span> {{ sym }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ── Symptoms ──────────────────────────────────────────────────────────── -->
+<div class="glass-card" style="padding:2rem;margin-bottom:1.5rem;">
+  <p class="label mb-2"><i class="fa fa-stethoscope"></i>&nbsp; Warning Signs</p>
+  <h2 class="heading-md mb-3">Early Warning Signs of Alzheimer's</h2>
+  <div class="grid-3">
+    {% for icon, title, desc in [
+      ('fa-brain','Memory Loss','Forgetting recently learned information, important dates, or events repeatedly'),
+      ('fa-puzzle-piece','Problem Solving','Difficulty with familiar tasks, following plans, or working with numbers'),
+      ('fa-location-dot','Disorientation','Losing track of dates, seasons, or becoming confused about location'),
+      ('fa-eye','Visual Changes','Difficulty reading, judging distances, or recognizing faces and colors'),
+      ('fa-comment-dots','Language Issues','Stopping mid-sentence, struggling to find words, or repeating themselves'),
+      ('fa-person-walking-arrow-right','Misplacing Things','Putting items in unusual places and unable to retrace steps'),
+      ('fa-scale-balanced','Poor Judgment','Decreased judgment in decisions such as personal hygiene or finances'),
+      ('fa-people-arrows','Social Withdrawal','Withdrawing from work, social activities, hobbies, and family'),
+      ('fa-face-frown','Mood Changes','Depression, anxiety, suspicion, fearfulness, or sudden mood swings')
+    ] %}
+    <div class="feature-card" style="padding:1.25rem;">
+      <div class="feature-icon" style="background:rgba(0,201,167,0.1);color:var(--teal);width:40px;height:40px;border-radius:10px;font-size:1rem;">
+        <i class="fa {{ icon }}"></i>
+      </div>
+      <h3 style="font-size:0.9rem;margin-top:0.75rem;margin-bottom:0.4rem;">{{ title }}</h3>
+      <p style="font-size:0.8rem;">{{ desc }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ── Early Detection ──────────────────────────────────────────────────── -->
+<div class="grid-2" style="margin-bottom:1.5rem;gap:1.5rem;">
+  <div class="glass-card" style="padding:2rem;background:var(--gradient-card);">
+    <p class="label mb-1"><i class="fa fa-magnifying-glass-chart"></i>&nbsp; Why Early Detection Matters</p>
+    <h3 class="heading-sm mb-2">AI Changes the Equation</h3>
+    <div class="insight-list">
+      <div class="insight-item"><i class="fa fa-clock insight-icon"></i><span>Earlier diagnosis means earlier access to treatments that may slow progression</span></div>
+      <div class="insight-item"><i class="fa fa-shield insight-icon"></i><span>Lifestyle interventions are most effective in pre-symptomatic and early stages</span></div>
+      <div class="insight-item"><i class="fa fa-users insight-icon"></i><span>Gives families more time to plan care, legal, and financial arrangements</span></div>
+      <div class="insight-item"><i class="fa fa-flask insight-icon"></i><span>Clinical trial eligibility is highest in early disease stages</span></div>
+      <div class="insight-item"><i class="fa fa-chart-line insight-icon"></i><span>AI-assisted MRI analysis can detect changes up to 10 years before symptoms appear</span></div>
+    </div>
+  </div>
+  <div class="glass-card" style="padding:2rem;">
+    <p class="label mb-1"><i class="fa fa-link"></i>&nbsp; Healthcare Resources</p>
+    <h3 class="heading-sm mb-2">Trusted Organizations</h3>
+    <div class="insight-list">
+      <div class="insight-item"><i class="fa fa-globe insight-icon"></i><span><strong>Alzheimer's Association</strong> — alz.org — 24/7 Helpline: 800-272-3900</span></div>
+      <div class="insight-item"><i class="fa fa-globe insight-icon"></i><span><strong>World Health Organization</strong> — who.int/news-room/fact-sheets/detail/dementia</span></div>
+      <div class="insight-item"><i class="fa fa-globe insight-icon"></i><span><strong>National Institute on Aging</strong> — nia.nih.gov/health/alzheimers</span></div>
+      <div class="insight-item"><i class="fa fa-globe insight-icon"></i><span><strong>Alzheimer's Society UK</strong> — alzheimers.org.uk</span></div>
+      <div class="insight-item"><i class="fa fa-database insight-icon"></i><span><strong>Dataset Used</strong> — Kaggle: 4-Class Alzheimer's MRI Dataset (6,400+ images)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── How This System Helps ──────────────────────────────────────────────── -->
+<div class="glass-card" style="padding:2rem;">
+  <p class="label mb-1"><i class="fa fa-microchip"></i>&nbsp; This System</p>
+  <h2 class="heading-md mb-3">How NeuroScan AI Contributes</h2>
+  <div class="grid-3">
+    <div style="text-align:center;padding:1.25rem;">
+      <div style="font-size:2.5rem;margin-bottom:0.75rem;">🔬</div>
+      <h4 style="font-weight:700;margin-bottom:0.5rem;color:var(--teal);">Explainable AI</h4>
+      <p style="font-size:0.83rem;color:var(--text-secondary);">Grad-CAM heatmaps make AI decisions transparent and clinically interpretable</p>
+    </div>
+    <div style="text-align:center;padding:1.25rem;">
+      <div style="font-size:2.5rem;margin-bottom:0.75rem;">📊</div>
+      <h4 style="font-weight:700;margin-bottom:0.5rem;color:var(--blue-light);">Evidence-Based</h4>
+      <p style="font-size:0.83rem;color:var(--text-secondary);">94%+ accuracy on validated dataset with clinical-grade performance metrics</p>
+    </div>
+    <div style="text-align:center;padding:1.25rem;">
+      <div style="font-size:2.5rem;margin-bottom:0.75rem;">🏥</div>
+      <h4 style="font-weight:700;margin-bottom:0.5rem;color:var(--purple);">Clinical Workflow</h4>
+      <p style="font-size:0.83rem;color:var(--text-secondary);">Generates professional PDF reports suitable for clinical discussion and review</p>
+    </div>
+  </div>
+  <div class="alert alert-warning mt-2">
+    <i class="fa fa-triangle-exclamation"></i>
+    <span>This system is designed for <strong>educational and research purposes only</strong>. It is not FDA-approved and should not replace clinical diagnosis by a qualified neurologist.</span>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends "layout_base.html" %}
+{% block title %}Home — MRI Upload{% endblock %}
+{% block page_title %}MRI Analysis &amp; Upload{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+<section style="padding:2.5rem 0 2rem; text-align:center;" id="mri-analysis">
+  <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,201,167,0.1);border:1px solid var(--border-accent);border-radius:999px;padding:0.4rem 1.1rem;font-size:0.78rem;font-weight:600;color:var(--teal);margin-bottom:1.5rem;">
+    <div class="pulse-dot"></div> AI-Powered Neurological Analysis
+  </div>
+  <h1 class="heading-xl">
+    Early Alzheimer's Detection<br/>
+    <span class="text-gradient">Powered by Explainable AI</span>
+  </h1>
+  <p style="max-width:600px;margin:1rem auto 0;color:var(--text-secondary);font-size:1.05rem;">
+    Upload a brain MRI scan and receive an instant AI-assisted prediction with
+    Grad-CAM heatmap visualization, clinical insights, and a downloadable PDF report.
+  </p>
+</section>
+
+<!-- ── Stats Row ─────────────────────────────────────────────────────────── -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-val text-gradient">94.1%</div>
+    <div class="stat-lbl">Model Accuracy</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val text-gradient">4</div>
+    <div class="stat-lbl">Disease Stages</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val text-gradient">98.3%</div>
+    <div class="stat-lbl">ROC-AUC Score</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val text-gradient">&lt;2s</div>
+    <div class="stat-lbl">Inference Time</div>
+  </div>
+</div>
+
+<!-- ── Upload Card ────────────────────────────────────────────────────────── -->
+<div class="glass-card" style="max-width:760px;margin:0 auto;padding:2rem;">
+  <p class="label"><i class="fa fa-upload"></i>&nbsp; Step 1 — Upload MRI Scan</p>
+  <h2 class="heading-md mt-1">Analyze Your Brain MRI</h2>
+  <p class="text-secondary mt-1" style="font-size:0.88rem;">
+    Supported: JPG, PNG, BMP, TIFF &nbsp;|&nbsp; Max: 16 MB
+  </p>
+
+  <!-- Drop Zone -->
+  <div class="upload-zone mt-3" id="dropZone">
+    <span class="upload-icon">🧠</span>
+    <div id="uploadText">
+      <p style="font-size:1.05rem;font-weight:600;">Drag &amp; Drop MRI scan here</p>
+      <p class="text-muted mt-1">or click to browse files</p>
+    </div>
+    <img class="preview-img" id="previewImg" src="" alt="MRI Preview"/>
+    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.bmp,.tiff"
+           style="position:absolute;inset:0;opacity:0;cursor:pointer;"/>
+  </div>
+
+  <!-- File Name Bar -->
+  <div id="fileNameBar" style="display:none;" class="mt-2">
+    <div class="flex-between" style="padding:0.6rem 1rem;background:rgba(0,201,167,0.08);border:1px solid var(--border-accent);border-radius:var(--radius-sm);">
+      <span style="font-size:0.85rem;color:var(--teal);"><i class="fa fa-file-image"></i> <span id="fileNameText"></span></span>
+      <button onclick="clearFile()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem;">✕</button>
+    </div>
+  </div>
+
+  <!-- Analyze Button -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;margin-top:1.5rem;">
+    <button class="btn btn-primary" id="analyzeBtn" onclick="analyzeImage()" disabled
+            style="font-size:1rem;padding:0.9rem 2.5rem;width:100%;max-width:320px;justify-content:center;">
+      <i class="fa fa-brain"></i> Analyze MRI Scan
+    </button>
+    <div id="loadingState" style="display:none;flex-direction:column;align-items:center;gap:0.75rem;">
+      <div class="spinner" style="display:block;"></div>
+      <p style="font-size:0.88rem;color:var(--text-secondary);">Running AI analysis...</p>
+    </div>
+    <p class="text-muted" style="font-size:0.75rem;text-align:center;max-width:380px;">
+      <i class="fa fa-shield-halved" style="color:var(--teal);"></i>
+      Data is processed locally and not stored permanently. For research use only.
+    </p>
+  </div>
+</div>
+
+<!-- ── Features ──────────────────────────────────────────────────────────── -->
+<section style="margin-top:3.5rem;">
+  <p class="label text-center">Why NeuroScan AI</p>
+  <h2 class="heading-lg text-center mt-1">Built for Clinical Intelligence</h2>
+  <div class="grid-3 mt-3">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(0,201,167,0.12);color:var(--teal);">
+        <i class="fa fa-eye"></i>
+      </div>
+      <h3>Grad-CAM Explainability</h3>
+      <p>Visual heatmaps highlight the exact MRI regions driving each prediction — making AI decisions transparent and trustworthy.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(59,130,246,0.12);color:var(--blue-light);">
+        <i class="fa fa-stethoscope"></i>
+      </div>
+      <h3>Clinical Insight Generator</h3>
+      <p>Automatically generates stage-specific symptoms, precautions, lifestyle recommendations, and doctor consultation advice.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(139,92,246,0.12);color:var(--purple);">
+        <i class="fa fa-file-medical"></i>
+      </div>
+      <h3>PDF Medical Report</h3>
+      <p>Download a professional medical report with MRI preview, confidence scores, clinical insights, and timestamped findings.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(249,115,22,0.12);color:var(--orange);">
+        <i class="fa fa-microchip"></i>
+      </div>
+      <h3>MobileNetV2 Architecture</h3>
+      <p>Transfer learning model pre-trained on ImageNet and fine-tuned on 6,400+ Alzheimer's MRI scans for high accuracy.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(6,182,212,0.12);color:var(--cyan);">
+        <i class="fa fa-layer-group"></i>
+      </div>
+      <h3>4-Stage Classification</h3>
+      <p>Classifies MRI scans into Non-Demented, Very Mild, Mild, and Moderate Demented with per-class confidence scores.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(34,197,94,0.12);color:var(--green);">
+        <i class="fa fa-chart-line"></i>
+      </div>
+      <h3>Performance Dashboard</h3>
+      <p>Explore model accuracy, training curves, per-class metrics, and confusion matrix in the interactive analytics dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ───────────────────────────────────────────────────────── -->
+<section style="margin-top:3.5rem;padding-bottom:2rem;">
+  <p class="label">Process</p>
+  <h2 class="heading-lg mt-1">How It Works</h2>
+  <div class="grid-2 mt-3">
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      {% for step in [
+        ('1','Upload MRI Scan','Drag and drop or select a JPG/PNG brain MRI image from your device.'),
+        ('2','Preprocessing','Image is resized to 224×224px and normalized for MobileNetV2 input.'),
+        ('3','Deep Learning Inference','MobileNetV2 extracts features and classifies across 4 dementia stages.'),
+        ('4','Grad-CAM Heatmap','GradientTape highlights the brain regions driving the AI prediction.'),
+        ('5','Clinical Insights + Report','AI generates clinical advice and a downloadable PDF medical report.')
+      ] %}
+      <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);">
+        <div class="step-badge">{{ step[0] }}</div>
+        <div>
+          <strong style="font-size:0.92rem;">{{ step[1] }}</strong>
+          <p style="font-size:0.83rem;color:var(--text-secondary);margin-top:0.2rem;">{{ step[2] }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="glass-card" style="padding:2rem;">
+      <h3 class="heading-sm mb-2">Disease Stage Classification</h3>
+      {% for cls, label, color, w in [
+        ('Non Demented','No Risk','#22c55e','100%'),
+        ('Very Mild Demented','Very Low Risk','#84cc16','75%'),
+        ('Mild Demented','Moderate Risk','#f97316','50%'),
+        ('Moderate Demented','High Risk','#ef4444','25%')
+      ] %}
+      <div style="margin-bottom:1.2rem;">
+        <div class="flex-between" style="margin-bottom:0.4rem;">
+          <span style="font-size:0.85rem;">{{ cls }}</span>
+          <span style="font-size:0.75rem;padding:0.2rem 0.6rem;border-radius:999px;background:{{ color }}22;color:{{ color }};border:1px solid {{ color }}44;font-weight:700;">{{ label }}</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:{{ w }};background:{{ color }};"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Mark MRI Analysis nav link active when scrolled to upload
+const navMri = document.getElementById('nav-mri');
+if(navMri) navMri.classList.add('active');
+const navHome = document.getElementById('nav-home');
+if(navHome) navHome.classList.remove('active');
+</script>
+{% endblock %}

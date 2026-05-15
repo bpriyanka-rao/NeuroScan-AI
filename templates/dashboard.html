@@ -1,0 +1,35 @@
+{% extends "layout_base.html" %}
+{% block title %}Model Performance Dashboard{% endblock %}
+{% block page_title %}Model Performance Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="section-header">
+  <p class="label"><i class="fa fa-chart-bar"></i>&nbsp; Analytics</p>
+  <h1 class="heading-lg">Model Performance Dashboard</h1>
+  <p>System-wide metrics and analysis overview.</p>
+</div>
+
+<!-- ── Key Metrics ─────────────────────────────────────────────────────────── -->
+<div class="grid-3 mb-2">
+  <div class="metric-card" style="border-top:3px solid var(--teal);">
+    <div class="metric-label"><i class="fa fa-microscope"></i> Total Scans Analyzed</div>
+    <div class="metric-value text-gradient">2,341</div>
+    <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">All time usage</div>
+  </div>
+  
+  <div class="metric-card" style="border-top:3px solid var(--blue-light);">
+    <div class="metric-label"><i class="fa fa-bullseye"></i> Model Accuracy</div>
+    <div class="metric-value text-gradient">{{ "%.1f"|format(metrics.accuracy*100) }}%</div>
+    <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">On test dataset</div>
+  </div>
+  
+  <div class="metric-card" style="border-top:3px solid var(--purple);">
+    <div class="metric-label"><i class="fa fa-clock-rotate-left"></i> Recent Predictions</div>
+    <div class="metric-value text-gradient">{{ session.get('history', []) | length }}</div>
+    <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">Current session</div>
+  </div>
+</div>
+
+{% endblock %}
+

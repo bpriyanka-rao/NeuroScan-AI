@@ -1,0 +1,8 @@
+{
+  "architecture": "mobilenetv2",
+  "input_size": 224,
+  "num_classes": 4,
+  "model_name": "AlzheimerDetector_MobileNetV2",
+  "created_at": "2026-05-15 15:09:59",
+  "updated_at": "2026-05-15 15:09:59"
+}

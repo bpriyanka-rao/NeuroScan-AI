@@ -1,0 +1,13 @@
+<svg width="900" height="520" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="520" fill="#0f172a" rx="24"/>
+  <rect x="60" y="60" width="340" height="400" fill="#111827" rx="18"/>
+  <rect x="440" y="60" width="380" height="180" fill="#111827" rx="18"/>
+  <rect x="440" y="270" width="380" height="190" fill="#111827" rx="18"/>
+  <rect x="110" y="110" width="240" height="50" rx="10" fill="#1f2937"/>
+  <rect x="110" y="190" width="240" height="200" rx="10" fill="#1f2937"/>
+  <text x="80" y="95" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="22">MRI Upload</text>
+  <text x="450" y="110" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="22">AI Prediction</text>
+  <text x="450" y="165" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="18">Very Mild Demented • 82% confidence</text>
+  <text x="450" y="320" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="22">Clinical Insights</text>
+  <text x="450" y="360" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="18">Memory support, lifestyle changes, specialist consult.</text>
+</svg>

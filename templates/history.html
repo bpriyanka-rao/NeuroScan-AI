@@ -1,0 +1,95 @@
+{% extends "layout_base.html" %}
+{% block title %}Scan History{% endblock %}
+{% block page_title %}Session Scan History{% endblock %}
+
+{% block content %}
+
+<div class="section-header flex-between" style="align-items:flex-end;">
+  <div>
+    <p class="label"><i class="fa fa-clock-rotate-left"></i>&nbsp; Activity</p>
+    <h1 class="heading-lg">Report History</h1>
+    <p>View the predictions made during your current session.</p>
+  </div>
+  
+  {% if history %}
+  <form action="/clear_history" method="POST">
+    <button type="submit" class="btn btn-outline" style="color:var(--red);border-color:rgba(239,68,68,0.3);">
+      <i class="fa fa-trash"></i> Clear History
+    </button>
+  </form>
+  {% endif %}
+</div>
+
+{% if not history %}
+<div class="glass-card" style="padding:3rem;text-align:center;">
+  <i class="fa fa-folder-open text-muted" style="font-size:3rem;margin-bottom:1rem;display:block;"></i>
+  <h3 class="heading-md">No scans found</h3>
+  <p class="text-secondary mt-1">You haven't uploaded any MRI scans in this session yet.</p>
+  <a href="/" class="btn btn-primary mt-2"><i class="fa fa-upload"></i> Start a New Scan</a>
+</div>
+{% else %}
+<div class="glass-card" style="padding:1rem;">
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Timestamp</th>
+          <th>Predicted Stage</th>
+          <th>Confidence</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set label_map = {'NonDemented':'Non Demented','VeryMildDemented':'Very Mild Demented','MildDemented':'Mild Demented','ModerateDemented':'Moderate Demented'} %}
+        {% set color_map = {'NonDemented':'#22c55e','VeryMildDemented':'#eab308','MildDemented':'#f97316','ModerateDemented':'#ef4444'} %}
+        
+        {% for item in history %}
+        <tr>
+          <td style="color:var(--text-muted);">{{ loop.length - loop.index0 }}</td>
+          <td>{{ item.timestamp }}</td>
+          <td>
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ color_map.get(item.stage,'#94a3b8') }};margin-right:6px;"></span>
+            <strong style="color:var(--text-primary);">{{ label_map.get(item.stage, item.stage) }}</strong>
+          </td>
+          <td>
+            <span style="color:var(--teal);font-weight:700;">{{ item.confidence }}%</span>
+          </td>
+          <td>
+            <div style="display:flex;gap:0.5rem;">
+              {% if item.heatmap_url %}
+              <button class="btn btn-outline" style="padding:0.4rem 0.6rem;font-size:0.75rem;" onclick="viewHeatmap('{{ item.heatmap_url }}')">
+                <i class="fa fa-eye"></i> View Grad-CAM
+              </button>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<!-- Heatmap Modal (simple implementation) -->
+<div id="heatmapModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;display:flex;justify-content:center;align-items:center;padding:2rem;">
+  <div class="glass-card" style="padding:1.5rem;max-width:500px;width:100%;position:relative;">
+    <button onclick="document.getElementById('heatmapModal').classList.add('hidden')" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:white;font-size:1.2rem;cursor:pointer;">
+      <i class="fa fa-xmark"></i>
+    </button>
+    <h3 class="heading-sm mb-2 text-center text-teal">Grad-CAM Heatmap</h3>
+    <img id="modalImg" src="" style="width:100%;border-radius:4px;" />
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function viewHeatmap(url) {
+  document.getElementById('modalImg').src = url;
+  document.getElementById('heatmapModal').classList.remove('hidden');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,89 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+*.so
+
+# ========================
+# Virtual Environments
+# ========================
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# ========================
+# Jupyter Notebooks
+# ========================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ========================
+# ML Model Files (large binary files)
+# ========================
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.pb
+*.tflite
+
+# ========================
+# Dataset / Data Files (large)
+# ========================
+data/
+*.csv
+*.npy
+*.npz
+
+# ========================
+# Logs & Reports
+# ========================
+logs/
+*.log
+reports/*.pdf
+reports/*.docx
+
+# ========================
+# OS & IDE
+# ========================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ========================
+# Flask / App Secrets
+# ========================
+instance/
+*.cfg
+config.py
+secret_key
+
+# ========================
+# Static uploads
+# ========================
+static/uploads/

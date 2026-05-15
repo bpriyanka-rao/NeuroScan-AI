@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Explainable AI-Based Alzheimer's Disease Detection and Clinical Insight System — powered by deep learning and Grad-CAM."/>
+  <title>{% block title %}NeuroScan AI{% endblock %} | Alzheimer's Detection System</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  {% block head %}{% endblock %}
+</head>
+<body class="fade-in">
+  
+<!-- ── Full Screen Loading Overlay ─────────────────────────────────────── -->
+<div id="global-loader" class="hidden">
+  <div class="spinner mb-2" style="width:50px;height:50px;"></div>
+  <h2 style="color:var(--teal);font-weight:700;">Analyzing MRI...</h2>
+  <p style="color:var(--text-secondary);font-size:0.85rem;margin-top:0.5rem;">Running deep learning models</p>
+</div>
+
+<div class="app-layout">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">🧠</div>
+      <div class="brand-name">Neuro<span>Scan AI</span></div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="/" class="sidebar-link {% if request.path == '/' %}active{% endif %}" id="nav-home">
+        <i class="fa fa-house"></i> Home
+      </a>
+      <a href="/#mri-analysis" class="sidebar-link" id="nav-mri">
+        <i class="fa fa-brain"></i> MRI Analysis
+      </a>
+
+      <div class="nav-section-label" style="margin-top:0.5rem;">Results</div>
+      <a href="/result" class="sidebar-link {% if request.path == '/result' %}active{% endif %}" id="nav-result">
+        <i class="fa fa-microscope"></i> AI Insights
+      </a>
+      <a href="/compare" class="sidebar-link {% if request.path == '/compare' %}active{% endif %}" id="nav-compare">
+        <i class="fa fa-code-compare"></i> Compare Scans
+      </a>
+      <a href="/report" class="sidebar-link" id="nav-report">
+        <i class="fa fa-file-medical"></i> Download Report
+      </a>
+
+      <div class="nav-section-label" style="margin-top:0.5rem;">Analytics</div>
+      <a href="/history" class="sidebar-link {% if request.path == '/history' %}active{% endif %}" id="nav-history">
+        <i class="fa fa-clock-rotate-left"></i> History
+      </a>
+      <a href="/dashboard" class="sidebar-link {% if request.path == '/dashboard' %}active{% endif %}" id="nav-dash">
+        <i class="fa fa-chart-bar"></i> Model Performance
+      </a>
+
+      <div class="nav-section-label" style="margin-top:0.5rem;">Learn</div>
+      <a href="/about" class="sidebar-link {% if request.path == '/about' %}active{% endif %}" id="nav-about">
+        <i class="fa fa-circle-info"></i> About Alzheimer's
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <strong>NeuroScan AI v2.0</strong><br/>
+      Final Year Engineering Project<br/>
+      MobileNetV2 + Grad-CAM + Flask
+    </div>
+  </aside>
+
+  <!-- ── Main Content ─────────────────────────────────────────────────── -->
+  <div class="main-content">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <button id="sidebarToggle" onclick="toggleSidebar()"
+          style="background:none;border:none;color:var(--text-secondary);font-size:1.1rem;display:none;">
+          <i class="fa fa-bars"></i>
+        </button>
+        <span class="topbar-title">{% block page_title %}Explainable Alzheimer's Detection System{% endblock %}</span>
+      </div>
+      <div class="topbar-right">
+        <button id="themeToggle" onclick="toggleTheme()" class="btn btn-outline" style="border:none;font-size:1.1rem;padding:0.4rem;">
+          <i class="fa fa-moon"></i>
+        </button>
+        <div class="status-pill">
+          <div class="pulse-dot"></div>
+          System Active
+        </div>
+        <span style="font-size:0.8rem;color:var(--text-muted);">Demo Mode</span>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-left:0;">
+      <p>
+        <strong>NeuroScan AI</strong> &nbsp;|&nbsp; Alzheimer's Disease Detection System
+      </p>
+      <p style="margin-top:0.4rem;">
+        ⚠️ For Educational Purposes Only. Not a substitute for clinical diagnosis.
+      </p>
+    </footer>
+  </div>
+</div>
+
+<!-- ── Chatbot Widget ─────────────────────────────────────────────────── -->
+<div id="chatbot-widget" class="chatbot-closed">
+  <button id="chatbot-toggle" onclick="toggleChatbot()">
+    <i class="fa fa-comment-medical"></i>
+  </button>
+  
+  <div id="chatbot-panel" class="hidden">
+    <div class="chatbot-header">
+      <div>
+        <i class="fa fa-robot"></i> NeuroScan Assistant
+      </div>
+      <button onclick="toggleChatbot()" style="background:none;border:none;color:white;cursor:pointer;">
+        <i class="fa fa-xmark"></i>
+      </button>
+    </div>
+    <div id="chatbot-messages" class="chatbot-messages">
+      <div class="message ai-message">
+        Hello! I'm your NeuroScan medical assistant. How can I help you understand Alzheimer's disease or your scan results today?
+      </div>
+    </div>
+    <div class="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Type your question..." onkeypress="handleChatKeypress(event)" />
+      <button id="chatbot-mic-btn" onclick="startVoiceInput()" title="Voice Input">
+        <i class="fa fa-microphone"></i>
+      </button>
+      <button id="chatbot-send-btn" onclick="sendChatMessage()">
+        <i class="fa fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"><i class="fa fa-circle-info" id="toastIcon"></i><span id="toastMsg">Message</span></div>
+
+<script src="/static/js/main.js"></script>
+<script src="/static/js/chatbot.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
