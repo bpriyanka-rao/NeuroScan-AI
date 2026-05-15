@@ -211,6 +211,11 @@ This project is built for demonstration and portfolio purposes only. It is not i
 
 ---
 
+## Author
+
+This project was developed, implemented, and documented by Priyanka Rao. All code, experiments, and documentation were produced by the author.
+
+
 ## 📄 License
 
 Use a permissive license if you want to publish this project publicly, such as MIT.
