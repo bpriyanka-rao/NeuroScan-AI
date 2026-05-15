@@ -8,25 +8,23 @@
 ![Explainable AI](https://img.shields.io/badge/Explainable%20AI-GradCAM-purple?style=for-the-badge)
 [![GitHub Actions](https://github.com/bpriyanka-rao/NeuroScan-AI/actions/workflows/python-app.yml/badge.svg)](https://github.com/bpriyanka-rao/NeuroScan-AI/actions/workflows/python-app.yml)
 
-NeuroScan AI is a polished portfolio-grade healthcare intelligence project that detects Alzheimer’s progression from brain MRI scans, provides explainable heatmaps, and generates medical-grade PDF reports with clinical recommendations.
+NeuroScan AI is an end-to-end research and deployment platform for multiclass Alzheimer’s stage classification from MRI images. The system includes deterministic preprocessing, transfer-learning inference, Grad-CAM explainability, and automated PDF report generation for technical evaluation and demonstration.
 
-This project is crafted for a strong portfolio presentation and demonstrates:
-- transfer learning on medical imaging data,
-- explainable AI with Grad-CAM,
-- end-to-end Flask deployment,
-- automated report generation,
-- a clean UX for clinical stakeholders.
+Core capabilities:
+- Multiclass classification using transfer learning (MobileNetV2 backbone)
+- Grad-CAM explainability for per-scan attribution maps
+- Automated, templated PDF report generation with structured clinical guidance
+- Flask-based web service and UI with demo fallback and artifact logging
 
 ---
 
-## 🌟 What Makes This Project Major
+## Key Capabilities
 
-- **Multiclass Alzheimer’s Detection**: Classifies MRI scans into four clinical stages.
-- **Explainability**: Uses Grad-CAM to surface model reasoning and support human review.
-- **Report Automation**: Generates structured PDF medical reports with predicted stage, confidence, and advice.
-- **Clinical Insights Engine**: Creates stage-specific symptoms, care guidance, and precautions.
-- **Full Web Application**: Upload interface, model inference, result pages, dashboard, and history tracking.
-- **Portfolio Ready**: Includes professional README, visuals, deployment guidance, and a strong technical story.
+- Multiclass Alzheimer’s stage classification (Non‑Demented, Very Mild, Mild, Moderate)
+- Explainability via Grad-CAM overlays and visual diagnostics
+- Programmatic report generation (PDF) for result export and review
+- Web deliverable: Flask front end, REST endpoints, dashboard, and history persistence
+- Training and evaluation tooling for reproducible experiments and metrics
 
 ---
 
