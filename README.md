@@ -44,7 +44,9 @@ Core capabilities:
 
 ## 📸 Screenshots
 
-### Homepage & Dashboard
+Real screenshots captured from the running Flask app are stored in `screenshots/`.
+
+### App Homepage
 ![Home Dashboard](screenshots/app-homepage.png)
 
 ### Upload & Prediction Flow
@@ -52,6 +54,13 @@ Core capabilities:
 
 ### Grad-CAM and Report View
 ![Grad-CAM Report](screenshots/gradcam-report.png)
+
+To refresh these screenshots locally, start the app and run:
+
+```bash
+python app/app.py
+python scripts/capture_screenshots.py
+```
 
 ---
 
@@ -219,6 +228,8 @@ git push -u origin main
 
 - Integration of advanced deep learning architectures such as ResNet and EfficientNet
 - Improved MRI image preprocessing and augmentation techniques
+- Mobile screenshots for responsive UI review
+- Short video demo or GIF showing the full prediction flow
 - Real-time prediction dashboard with enhanced visualization
 - Automated PDF medical report generation
 - Performance optimization using larger medical imaging datasets
