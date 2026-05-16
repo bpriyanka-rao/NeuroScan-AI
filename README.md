@@ -46,7 +46,14 @@ Core capabilities:
 
 Real screenshots captured from the running Flask app are stored in `screenshots/`.
 
+### App Homepage
+![Home Dashboard](screenshots/app-homepage.png)
 
+### Upload & Prediction Flow
+![Upload Prediction](screenshots/upload-prediction.png)
+
+### Grad-CAM and Report View
+![Grad-CAM Report](screenshots/gradcam-report.png)
 
 To refresh these screenshots locally, start the app and run:
 
