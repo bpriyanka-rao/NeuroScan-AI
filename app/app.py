@@ -2,7 +2,7 @@
 =============================================================================
  Explainable AI-Based Alzheimer's Disease Detection and Clinical Insight System
  File: app/app.py
- Author: Pratikshya Gopal | Healthcare AI System
+ Author: Pratikshya Gopal B Priyanka| Healthcare AI System
 =============================================================================
  Routes:
    GET  /             → Home / Upload page
@@ -438,4 +438,4 @@ if __name__ == "__main__":
     print("  Explainable AI-Based Alzheimer's Disease Detection System")
     print("  URL: http://localhost:5000")
     print("=" * 70)
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000, use_reloader=False)

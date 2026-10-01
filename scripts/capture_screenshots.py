@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "screenshots"
 UPLOADS = ROOT / "static" / "uploads"
-MRI = UPLOADS / "scan_cf5afccdfc.png"
+MRI = ROOT / "data" / "test" / "MildDemented" / "mild.jpg"
 HEATMAP = UPLOADS / "scan_cf5afccdfc_heatmap.png"
 
 BG = "#08111f"

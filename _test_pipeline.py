@@ -5,8 +5,9 @@ from gradcam import generate_gradcam
 from clinical_insights import get_clinical_insights
 from pdf_report import generate_pdf_report
 
-result = predict_image('dummy.jpg')
-b64 = generate_gradcam('dummy.jpg', model=None)
+image_path = 'data/test/MildDemented/mild.jpg'
+result = predict_image(image_path)
+b64 = generate_gradcam(image_path, model=None)
 ins = get_clinical_insights(result['class'], result['confidence'])
 pdf = generate_pdf_report(result, ins, patient_name='Test Patient')
 print('ALL MODULES OK')
