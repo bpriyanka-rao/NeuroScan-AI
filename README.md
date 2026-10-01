@@ -15,6 +15,8 @@ Core capabilities:
 - Multiclass classification using transfer learning (MobileNetV2 backbone)
 - Grad-CAM explainability for per-scan attribution maps
 - Automated, templated PDF report generation with structured clinical guidance
+- Side-by-side MRI comparison with a downloadable comparison PDF
+- Chat assistant with microphone input and optional spoken replies
 - Flask-based web service and UI with demo fallback and artifact logging
 
 ---
@@ -34,8 +36,9 @@ Core capabilities:
 - MRI upload and prediction pipeline
 - Four Alzheimer’s categories: Non-Demented, Very Mild, Mild, Moderate
 - Grad-CAM image overlay for AI transparency
-- Patient report generation via `FPDF`
+- Patient and scan-comparison PDF reports via `FPDF`
 - Responsive Flask web UI with dashboard and history pages
+- Chat speech input/output using browser speech APIs
 - Model fallback demo mode when trained weights are unavailable
 - Training script for custom datasets and architecture extension
 - Docker support and GitHub Actions CI configuration for professional delivery
@@ -145,6 +148,8 @@ The app can optionally send email reports and chat with Gemini. Copy `.env.examp
 - `MAIL_USERNAME` — SMTP sender email address
 - `MAIL_PASSWORD` — SMTP sender password
 
+The Gemini key must be valid for chatbot responses. Keep `.env` private and do not commit it. Microphone input requires browser support and permission; use `localhost` on the app computer or serve the app over HTTPS. A plain HTTP LAN address such as `http://192.168.x.x:5000` is not a secure context for microphone access.
+
 ### Install
 ```bash
 git clone https://github.com/bpriyanka-rao/NeuroScan-AI.git
@@ -170,12 +175,29 @@ docker run -p 5000:5000 neuroscan-ai
 
 ## 🧠 Training Your Own Model
 
-1. Download and prepare an Alzheimer’s MRI dataset.
-2. Place training images in `data/train` and validation/test images in `data/test`.
-3. Run the training script:
+1. Download and prepare an Alzheimer’s MRI dataset with one directory per class in each split. The class directory names must be `MildDemented`, `ModerateDemented`, `NonDemented`, and `VeryMildDemented`.
+2. Arrange the data like this:
+```text
+data/
+├── train/
+│   ├── MildDemented/
+│   ├── ModerateDemented/
+│   ├── NonDemented/
+│   └── VeryMildDemented/
+└── test/
+	├── MildDemented/
+	├── ModerateDemented/
+	├── NonDemented/
+	└── VeryMildDemented/
+```
+3. Put the MRI image files inside their matching class folders. The training loader uses `data/train`; `data/test` is used as validation during training and by `src/evaluate.py`.
+4. Install dependencies using Python 3.10 or 3.11 as listed in Prerequisites, then run:
 ```bash
 python src/train.py --architecture mobilenetv2
 ```
+Training replaces the model artifacts under `models/`.
+
+The website does not train from the dataset when it starts. It loads `models/alzheimer_model.h5` for uploaded scans; run the training command to create a new model from your dataset.
 
 ---
 

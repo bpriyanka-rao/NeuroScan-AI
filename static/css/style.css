@@ -769,6 +769,17 @@ body.light-mode .data-table tr:hover td { background: #f1f5f9; }
   color: var(--text-primary);
   align-self: flex-start;
   border-bottom-left-radius: 2px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-speak-btn {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  color: var(--teal);
+  cursor: pointer;
+  padding: 0.2rem;
 }
 
 .chatbot-input-area {

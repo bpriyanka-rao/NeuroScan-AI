@@ -82,6 +82,48 @@ def generate_pdf_report(result: dict, insights: dict, image_path: str = None,
     return bytes(pdf.output())
 
 
+def generate_comparison_pdf(comparison: dict) -> bytes:
+    """Generate a concise PDF summary for a completed two-scan comparison."""
+    if not FPDF_AVAILABLE:
+        raise RuntimeError("Install fpdf2 to generate comparison reports.")
+
+    labels = {
+        "NonDemented": "Non Demented",
+        "VeryMildDemented": "Very Mild Demented",
+        "MildDemented": "Mild Demented",
+        "ModerateDemented": "Moderate Demented",
+    }
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Helvetica", "B", 16)
+    pdf.cell(0, 12, "NeuroScan AI - MRI Comparison Report", ln=True, align="C")
+    pdf.ln(4)
+    pdf.set_font("Helvetica", "", 10)
+    pdf.cell(0, 7, f"Generated: {comparison.get('created_at', 'Unknown')}", ln=True)
+    pdf.ln(4)
+
+    for heading, key in (("Earlier Scan", "scan1"), ("Recent Scan", "scan2")):
+        scan = comparison[key]
+        pdf.set_font("Helvetica", "B", 12)
+        pdf.cell(0, 9, heading, ln=True)
+        pdf.set_font("Helvetica", "", 11)
+        pdf.cell(0, 7, f"Predicted stage: {labels.get(scan['class'], scan['class'])}", ln=True)
+        pdf.cell(0, 7, f"Model confidence: {scan['confidence']}%", ln=True)
+        pdf.ln(3)
+
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.cell(0, 9, f"Comparison: {comparison['progression'].title()}", ln=True)
+    pdf.ln(6)
+    pdf.set_font("Helvetica", "I", 9)
+    pdf.multi_cell(
+        0,
+        6,
+        "For educational and research purposes only. This AI-generated comparison "
+        "is not a medical diagnosis. Consult a qualified medical professional.",
+    )
+    return bytes(pdf.output())
+
+
 # ==============================================================================
 #  PDF CLASS
 # ==============================================================================

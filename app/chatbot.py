@@ -13,6 +13,13 @@ except ImportError:
         GENAI_SDK = None
 
 
+def _format_chat_error(error: Exception) -> str:
+    message = str(error)
+    if "api_key_invalid" in message.lower() or "api key not valid" in message.lower():
+        return "Gemini rejected the API key. Set a valid GEMINI_API_KEY in .env and restart the app."
+    return f"Sorry, I encountered an error: {message}"
+
+
 def get_chatbot_response(user_message: str, current_scan_context: str = None) -> str:
     """
     Sends a message to the Gemini chatbot and returns the response.
@@ -46,7 +53,7 @@ def get_chatbot_response(user_message: str, current_scan_context: str = None) ->
             )
             return response.text
         except Exception as e:
-            return f"Sorry, I encountered an error: {str(e)}"
+            return _format_chat_error(e)
     else:
         genai.configure(api_key=api_key)
         system_prompt = (
@@ -66,4 +73,4 @@ def get_chatbot_response(user_message: str, current_scan_context: str = None) ->
             response = model.generate_content(user_message)
             return response.text
         except Exception as e:
-            return f"Sorry, I encountered an error: {str(e)}"
+            return _format_chat_error(e)

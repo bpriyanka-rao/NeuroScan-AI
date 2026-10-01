@@ -24,7 +24,20 @@ function handleChatKeypress(event) {
 function appendMessage(text, isUser = false) {
   const msgDiv = document.createElement('div');
   msgDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
-  msgDiv.textContent = text;
+  const messageText = document.createElement('span');
+  messageText.textContent = text;
+  msgDiv.appendChild(messageText);
+
+  if (!isUser && 'speechSynthesis' in window) {
+    const speakButton = document.createElement('button');
+    speakButton.type = 'button';
+    speakButton.className = 'chat-speak-btn';
+    speakButton.title = 'Speak response';
+    speakButton.setAttribute('aria-label', 'Speak response');
+    speakButton.innerHTML = '<i class="fa fa-volume-high"></i>';
+    speakButton.addEventListener('click', () => speakChatMessage(text));
+    msgDiv.appendChild(speakButton);
+  }
   
   const container = document.getElementById('chatbot-messages');
   // Remove typing indicator if exists
@@ -35,6 +48,19 @@ function appendMessage(text, isUser = false) {
   
   container.appendChild(msgDiv);
   container.scrollTop = container.scrollHeight;
+}
+
+function speakChatMessage(text) {
+  if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
+    showToast('Speech playback is not supported in this browser.', 'error');
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  utterance.onerror = () => showToast('Could not play this response aloud.', 'error');
+  window.speechSynthesis.speak(utterance);
 }
 
 // Show typing indicator
@@ -113,6 +139,13 @@ function startVoiceInput() {
     inputEl.placeholder = 'Type your question...';
     micBtn.style.color = '';
     console.error('Speech recognition error', event.error);
+    const messages = {
+      'not-allowed': 'Allow microphone access and use localhost or an HTTPS address.',
+      'audio-capture': 'No microphone was detected.',
+      'no-speech': 'No speech was detected. Try again.',
+      'network': 'Voice recognition is unavailable right now.',
+    };
+    showToast(messages[event.error] || 'Voice input could not start.', 'error');
   };
   
   recognition.onend = function() {
@@ -120,5 +153,11 @@ function startVoiceInput() {
     inputEl.placeholder = 'Type your question...';
   };
   
-  recognition.start();
+  try {
+    recognition.start();
+  } catch (error) {
+    inputEl.placeholder = 'Type your question...';
+    micBtn.style.color = '';
+    showToast('Voice input could not start. Check microphone permission.', 'error');
+  }
 }

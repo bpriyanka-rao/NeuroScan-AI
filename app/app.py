@@ -5,7 +5,7 @@
  Author: Pratikshya Gopal B Priyanka| Healthcare AI System
 =============================================================================
  Routes:
-   GET  /             → Home / Upload page
+    GET  /             → Home / Upload page
    POST /predict      → Run inference, Grad-CAM, clinical insights → JSON
    GET  /result       → Full result display (MRI + heatmap + insights)
    GET  /dashboard    → Model performance dashboard
@@ -38,7 +38,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 from predict import predict_image                              # noqa: E402
 from gradcam import generate_gradcam                          # noqa: E402
 from clinical_insights import get_clinical_insights           # noqa: E402
-from pdf_report import generate_pdf_report                    # noqa: E402
+from pdf_report import generate_pdf_report, generate_comparison_pdf  # noqa: E402
 from chatbot import get_chatbot_response                      # noqa: E402
 from email_service import init_mail, send_report_email        # noqa: E402
 
@@ -173,7 +173,7 @@ def predict():
         if heatmap_b64:
             import base64
             heatmap_data = base64.b64decode(heatmap_b64)
-            heatmap_filename = filename.replace(".", "_heatmap.")
+            heatmap_filename = f"{os.path.splitext(filename)[0]}_heatmap.png"
             heatmap_filepath = os.path.join(app.config["UPLOAD_FOLDER"], heatmap_filename)
             with open(heatmap_filepath, "wb") as f:
                 f.write(heatmap_data)
@@ -347,7 +347,8 @@ def clear_history():
 
 @app.route("/static/uploads/<filename>")
 def uploaded_file(filename):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+    mimetype = "image/png" if "_heatmap." in filename else None
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename, mimetype=mimetype)
 
 
 @app.route("/api/chat", methods=["POST"])
@@ -425,8 +426,31 @@ def compare():
         progression = "improved"
     else:
         progression = "stable"
+
+    session["last_comparison"] = {
+        "scan1": {"class": res1["class"], "confidence": res1["confidence"]},
+        "scan2": {"class": res2["class"], "confidence": res2["confidence"]},
+        "progression": progression,
+        "created_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+    }
         
     return render_template("compare.html", res1=res1, res2=res2, progression_status=progression)
+
+
+@app.route("/compare_report")
+def compare_report():
+    comparison = session.get("last_comparison")
+    if not comparison:
+        return redirect(url_for("compare"))
+
+    try:
+        pdf_bytes = generate_comparison_pdf(comparison)
+        response = make_response(pdf_bytes)
+        response.headers["Content-Type"] = "application/pdf"
+        response.headers["Content-Disposition"] = "attachment; filename=NeuroScan_Comparison_Report.pdf"
+        return response
+    except Exception as e:
+        return jsonify({"error": f"Comparison report generation failed: {str(e)}"}), 500
 
 
 # ════════════════════════════════════════════════════════════════════════════

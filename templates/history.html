@@ -73,9 +73,9 @@
 {% endif %}
 
 <!-- Heatmap Modal (simple implementation) -->
-<div id="heatmapModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;display:flex;justify-content:center;align-items:center;padding:2rem;">
+<div id="heatmapModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;display:none;justify-content:center;align-items:center;padding:2rem;">
   <div class="glass-card" style="padding:1.5rem;max-width:500px;width:100%;position:relative;">
-    <button onclick="document.getElementById('heatmapModal').classList.add('hidden')" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:white;font-size:1.2rem;cursor:pointer;">
+    <button onclick="document.getElementById('heatmapModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:white;font-size:1.2rem;cursor:pointer;">
       <i class="fa fa-xmark"></i>
     </button>
     <h3 class="heading-sm mb-2 text-center text-teal">Grad-CAM Heatmap</h3>
@@ -89,7 +89,7 @@
 <script>
 function viewHeatmap(url) {
   document.getElementById('modalImg').src = url;
-  document.getElementById('heatmapModal').classList.remove('hidden');
+  document.getElementById('heatmapModal').style.display = 'flex';
 }
 </script>
 {% endblock %}

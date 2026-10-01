@@ -51,7 +51,7 @@ def get_data_generators(data_dir: str, val_split: float = 0.20, model_name: str 
     Create train & validation ImageDataGenerators with augmentation.
 
     Args:
-        data_dir  : Root folder containing one sub-folder per class.
+        data_dir  : Root containing train/test class folders or one class-folder set.
         val_split : Fraction of data reserved for validation (default 20%).
         model_name: Backbone name used for preprocessing.
 
@@ -67,6 +67,19 @@ def get_data_generators(data_dir: str, val_split: float = 0.20, model_name: str 
         from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
     preprocess_fn = _get_preprocess_function(model_name)
+
+    train_dir = os.path.join(data_dir, "train")
+    validation_dir = os.path.join(data_dir, "test")
+    if os.path.isdir(train_dir) and os.path.isdir(validation_dir):
+        train_source = train_dir
+        validation_source = validation_dir
+        train_subset = None
+        validation_subset = None
+    else:
+        train_source = data_dir
+        validation_source = data_dir
+        train_subset = "training"
+        validation_subset = "validation"
 
     # ── Training generator WITH augmentation ───────────────────────────────
     train_datagen = ImageDataGenerator(
@@ -88,21 +101,23 @@ def get_data_generators(data_dir: str, val_split: float = 0.20, model_name: str 
     )
 
     train_gen = train_datagen.flow_from_directory(
-        data_dir,
+        train_source,
         target_size=(IMG_SIZE, IMG_SIZE),
         batch_size=BATCH_SIZE,
         class_mode="categorical",
-        subset="training",
+        classes=CLASS_NAMES,
+        subset=train_subset,
         seed=SEED,
         shuffle=True,
     )
 
     val_gen = val_datagen.flow_from_directory(
-        data_dir,
+        validation_source,
         target_size=(IMG_SIZE, IMG_SIZE),
         batch_size=BATCH_SIZE,
         class_mode="categorical",
-        subset="validation",
+        classes=CLASS_NAMES,
+        subset=validation_subset,
         seed=SEED,
         shuffle=False,
     )
